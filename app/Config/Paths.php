@@ -62,6 +62,14 @@ class Paths
     {
         if (isset($_SERVER['VERCEL']) || getenv('VERCEL')) {
             $this->writableDirectory = '/tmp';
+            // Vercel only provides an empty /tmp directory.
+            // CodeIgniter needs these subdirectories to exist.
+            $dirs = ['cache', 'logs', 'session', 'uploads'];
+            foreach ($dirs as $dir) {
+                if (!is_dir("/tmp/$dir")) {
+                    @mkdir("/tmp/$dir", 0777, true);
+                }
+            }
         }
     }
 
