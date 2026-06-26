@@ -1,0 +1,12 @@
+# Environments
+.env
+
+# CodeIgniter 4
+/writable/
+/vendor/
+/build/
+
+# IDE and OS files
+.idea/
+.vscode/
+.DS_Store
