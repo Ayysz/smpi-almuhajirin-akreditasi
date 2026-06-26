@@ -21,7 +21,7 @@ class Auth extends BaseController
         }
         
         // Tampilkan halaman login
-        return view('auth/login');
+        return view('Auth/login');
     }
 
     public function login()
