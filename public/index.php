@@ -41,6 +41,11 @@ require rtrim($paths->systemDirectory, '\\/ ') . DIRECTORY_SEPARATOR . 'bootstra
 require_once SYSTEMPATH . 'Config/DotEnv.php';
 (new CodeIgniter\Config\DotEnv(ROOTPATH))->load();
 
+// FORCE DEVELOPMENT MODE
+if (! defined('ENVIRONMENT')) {
+    define('ENVIRONMENT', 'development');
+}
+
 /*
  * ---------------------------------------------------------------
  * GRAB OUR CODEIGNITER INSTANCE
