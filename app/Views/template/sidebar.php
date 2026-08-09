@@ -10,7 +10,7 @@
             $allowedKegiatan = ['admin','waka_kesiswaan','guru'];
             if (in_array($role, $allowedKegiatan)):
         ?>
-        <a href="<?= base_url('kegiatan') ?>" class="list-group-item list-group-item-action border-0 <?= (strpos(uri_string(), 'kegiatan') !== false) ? 'active' : '' ?>">
+        <a href="<?= base_url('kegiatan') ?>" class="list-group-item list-group-item-action border-0 <?= (uri_string() == 'kegiatan' || strpos(uri_string(), 'kegiatan/') !== false) ? 'active' : '' ?>">
             <i class="bi bi-calendar-event"></i> Kegiatan Kesiswaan
         </a>
         <?php endif; ?>
@@ -53,7 +53,7 @@
         
         <?php if (in_array(session()->get('role'), ['admin', 'waka_kesiswaan', 'kepala_sekolah'])): ?>
         <div class="sidebar-section px-3">Monitoring</div>
-        <a href="<?= base_url('laporan') ?>" class="list-group-item list-group-item-action border-0 <?= (strpos(uri_string(), 'laporan') !== false) ? 'active' : '' ?>">
+        <a href="<?= base_url('laporan') ?>" class="list-group-item list-group-item-action border-0 <?= (uri_string() == 'laporan' || strpos(uri_string(), 'laporan/') !== false) ? 'active' : '' ?>">
             <i class="bi bi-file-bar-graph"></i> Laporan
         </a>
         <?php endif; ?>
