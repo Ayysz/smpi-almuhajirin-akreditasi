@@ -14,10 +14,12 @@
                     <label class="form-label">Tahun Ajaran / Periode</label>
                     <select class="form-select" name="periode">
                         <option value="">Semua Periode</option>
+                        <option value="2029/2030" <?= (isset($periode) && $periode == '2029/2030') ? 'selected' : '' ?>>2029/2030</option>
+                        <option value="2028/2029" <?= (isset($periode) && $periode == '2028/2029') ? 'selected' : '' ?>>2028/2029</option>
+                        <option value="2027/2028" <?= (isset($periode) && $periode == '2027/2028') ? 'selected' : '' ?>>2027/2028</option>
+                        <option value="2026/2027" <?= (isset($periode) && $periode == '2026/2027') ? 'selected' : '' ?>>2026/2027</option>
                         <option value="2025/2026" <?= (isset($periode) && $periode == '2025/2026') ? 'selected' : '' ?>>2025/2026</option>
                         <option value="2024/2025" <?= (isset($periode) && $periode == '2024/2025') ? 'selected' : '' ?>>2024/2025</option>
-                        <option value="2023/2024" <?= (isset($periode) && $periode == '2023/2024') ? 'selected' : '' ?>>2023/2024</option>
-                        <option value="2022/2023" <?= (isset($periode) && $periode == '2022/2023') ? 'selected' : '' ?>>2022/2023</option>
                     </select>
                 </div>
                 <input type="hidden" name="tab" id="activeTabFilter" value="<?= isset($_GET['tab']) ? esc($_GET['tab']) : 'proker' ?>">

@@ -31,13 +31,13 @@ class App extends BaseConfig
         parent::__construct();
         
         // Dynamically set baseURL if running on Vercel or production
-        if (isset($_SERVER['HTTP_HOST'])) {
+        /* if (isset($_SERVER['HTTP_HOST'])) {
             $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
             if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
                 $protocol = $_SERVER['HTTP_X_FORWARDED_PROTO'];
             }
             $this->baseURL = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/';
-        }
+        } */
     }
 
     /**

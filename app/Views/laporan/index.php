@@ -62,11 +62,12 @@
                     <form action="<?= base_url('laporan/komprehensif') ?>" method="get" class="d-flex justify-content-center align-items-center gap-2">
                         <select name="tahun" class="form-select w-auto">
                             <option value="">Semua Tahun Ajaran</option>
+                            <option value="2029/2030">2029/2030</option>
+                            <option value="2028/2029">2028/2029</option>
+                            <option value="2027/2028">2027/2028</option>
                             <option value="2026/2027">2026/2027</option>
                             <option value="2025/2026">2025/2026</option>
                             <option value="2024/2025">2024/2025</option>
-                            <option value="2023/2024">2023/2024</option>
-                            <option value="2022/2023">2022/2023</option>
                         </select>
                         <button type="submit" class="btn btn-danger text-white px-4 py-2">
                             <i class="bi bi-file-earmark-text"></i> Buka Laporan

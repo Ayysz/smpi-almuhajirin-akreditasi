@@ -64,9 +64,8 @@
                     <select name="tahun_ajaran" class="form-select">
                         <option value="">Semua Tahun Ajaran</option> <!-- OPSI BARU INI -->
                         <?php 
-                        $currentYear = date('Y');
-                        for($i = 0; $i < 3; $i++): 
-                            $year = ($currentYear - $i) . '/' . ($currentYear - $i + 1);
+                        for($y = 2029; $y >= 2024; $y--): 
+                            $year = $y . '/' . ($y + 1);
                         ?>
                             <option value="<?= $year ?>" <?= ($tahun_ajaran == $year) ? 'selected' : '' ?>>
                                 <?= $year ?>

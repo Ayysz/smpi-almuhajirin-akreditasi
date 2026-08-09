@@ -21,6 +21,7 @@ class KegiatanModel extends Model
         'rundown_kegiatan',
         'surat_keterangan',
         'proposal_laporan',
+        'created_by'
     ];
     protected $useTimestamps = true;
     protected $createdField = 'created_at';

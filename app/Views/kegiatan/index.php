@@ -72,9 +72,8 @@
                                     <div class="btn-group btn-group-sm js-stop-row">
                                         <!-- Edit - Admin/Waka saat menunggu, Guru saat menunggu/ditolak -->
                                         <?php
-                                            $isGuru = strpos($role, 'guru') === 0;
-                                            $canEdit = (in_array($role, ['waka_kesiswaan']) && $k['status_verifikasi'] == 'menunggu')
-                                                || ($isGuru && in_array($k['status_verifikasi'], ['menunggu', 'ditolak']));
+                                            $isOwner = $k['created_by'] == session()->get('id_user');
+                                            $canEdit = $isOwner && in_array($k['status_verifikasi'], ['menunggu', 'ditolak']);
                                         ?>
                                         <?php if ($canEdit): ?>
                                         <a href="<?= base_url('kegiatan/edit/' . $k['id_kegiatan']) ?>" class="btn btn-warning" title="Edit">

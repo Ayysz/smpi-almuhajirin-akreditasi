@@ -64,7 +64,7 @@ class User extends BaseController
 
         $data = [
             'username' => $this->request->getPost('username'),
-            'password' => md5($this->request->getPost('password')),
+            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             'nama_lengkap' => $this->request->getPost('nama_lengkap'),
             'role' => $this->request->getPost('role'),
             'nip_nis' => $this->request->getPost('nip_nis'),
@@ -116,7 +116,7 @@ class User extends BaseController
         // Update password jika diisi
         $password = $this->request->getPost('password');
         if (!empty($password)) {
-            $data['password'] = md5($password);
+            $data['password'] = password_hash($password, PASSWORD_DEFAULT);
         }
 
         if ($this->userModel->update($id, $data)) {
@@ -162,7 +162,7 @@ class User extends BaseController
 
         $new_password = 'password123';
         
-        $data = ['password' => md5($new_password)];
+        $data = ['password' => password_hash($new_password, PASSWORD_DEFAULT)];
 
         if ($this->userModel->update($id, $data)) {
             return $this->response->setJSON([

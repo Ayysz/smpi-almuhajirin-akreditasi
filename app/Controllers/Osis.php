@@ -158,14 +158,20 @@ class Osis extends BaseController
         if (!$this->guardOsis('write')) {
             return redirect()->to('/dashboard')->with('error', 'Akses OSIS dibatasi.');
         }
-        $data = [
-            'title' => 'Edit Laporan Kegiatan',
-            'laporan' => $this->laporanModel->find($id)
-        ];
+        $laporan = $this->laporanModel->find($id);
         
-        if (!$data['laporan']) {
+        if (!$laporan) {
             return redirect()->to('/osis/laporan-kegiatan')->with('error', 'Laporan tidak ditemukan!');
         }
+        
+        if ($laporan['created_by'] != session()->get('id_user')) {
+            return redirect()->to('/osis/laporan-kegiatan')->with('error', 'Akses ditolak. Anda bukan pengunggah laporan ini.');
+        }
+
+        $data = [
+            'title' => 'Edit Laporan Kegiatan',
+            'laporan' => $laporan
+        ];
         
         return view('template/header', $data)
              . view('template/sidebar')
@@ -183,6 +189,10 @@ class Osis extends BaseController
         $laporan = $this->laporanModel->find($id);
         if (!$laporan) {
             return redirect()->to('/osis/laporan-kegiatan')->with('error', 'Laporan tidak ditemukan.');
+        }
+
+        if ($laporan['created_by'] != session()->get('id_user')) {
+            return redirect()->to('/osis/laporan-kegiatan')->with('error', 'Akses ditolak. Anda bukan pengunggah laporan ini.');
         }
 
         $rules = [
@@ -343,14 +353,20 @@ class Osis extends BaseController
         if (!$this->guardOsis('write')) {
             return redirect()->to('/dashboard')->with('error', 'Akses OSIS dibatasi.');
         }
-        $data = [
-            'title' => 'Edit Program Kerja',
-            'program' => $this->programModel->find($id)
-        ];
+        $program = $this->programModel->find($id);
         
-        if (!$data['program']) {
+        if (!$program) {
             return redirect()->to('/osis/program-kerja')->with('error', 'Program tidak ditemukan!');
         }
+
+        if ($program['created_by'] != session()->get('id_user')) {
+            return redirect()->to('/osis/program-kerja')->with('error', 'Akses ditolak. Anda bukan pengunggah program ini.');
+        }
+        
+        $data = [
+            'title' => 'Edit Program Kerja',
+            'program' => $program
+        ];
         
         return view('template/header', $data)
              . view('template/sidebar')
@@ -364,6 +380,13 @@ class Osis extends BaseController
             return redirect()->to('/dashboard')->with('error', 'Akses OSIS dibatasi.');
         }
         $id = $this->request->getPost('id_program');
+        $program = $this->programModel->find($id);
+        if (!$program) {
+            return redirect()->to('/osis/program-kerja')->with('error', 'Program tidak ditemukan!');
+        }
+        if ($program['created_by'] != session()->get('id_user')) {
+            return redirect()->to('/osis/program-kerja')->with('error', 'Akses ditolak. Anda bukan pengunggah program ini.');
+        }
         
         $data = [
             'nama_program' => $this->request->getPost('nama_program'),
@@ -459,14 +482,20 @@ class Osis extends BaseController
         if (!$this->guardOsis('write')) {
             return redirect()->to('/dashboard')->with('error', 'Akses OSIS dibatasi untuk Admin, Waka, dan Guru.');
         }
-        $data = [
-            'title' => 'Edit Dokumen OSIS',
-            'dokumen' => $this->dokumenOsisModel->find($id)
-        ];
+        $dokumen = $this->dokumenOsisModel->find($id);
         
-        if (!$data['dokumen']) {
+        if (!$dokumen) {
             return redirect()->to('/osis/dokumen')->with('error', 'Dokumen tidak ditemukan!');
         }
+
+        if ($dokumen['uploaded_by'] != session()->get('id_user')) {
+            return redirect()->to('/osis/dokumen')->with('error', 'Akses ditolak. Anda bukan pengunggah dokumen ini.');
+        }
+
+        $data = [
+            'title' => 'Edit Dokumen OSIS',
+            'dokumen' => $dokumen
+        ];
         
         return view('template/header', $data)
              . view('template/sidebar')
@@ -480,6 +509,13 @@ class Osis extends BaseController
             return redirect()->to('/dashboard')->with('error', 'Akses OSIS dibatasi untuk Admin, Waka, dan Guru.');
         }
         $id = $this->request->getPost('id_dokumen');
+        $dokumen = $this->dokumenOsisModel->find($id);
+        if (!$dokumen) {
+            return redirect()->to('/osis/dokumen')->with('error', 'Dokumen tidak ditemukan!');
+        }
+        if ($dokumen['uploaded_by'] != session()->get('id_user')) {
+            return redirect()->to('/osis/dokumen')->with('error', 'Akses ditolak. Anda bukan pengunggah dokumen ini.');
+        }
         
         $data = [
             'jenis_dokumen' => $this->request->getPost('jenis_dokumen'),

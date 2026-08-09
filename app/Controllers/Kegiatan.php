@@ -159,7 +159,7 @@ class Kegiatan extends BaseController
         $user_id = session()->get('id_user');
         
         // Cek kepemilikan atau admin
-        if (!in_array($role, ['waka_kesiswaan']) && $kegiatan['created_by'] != $user_id) {
+        if ($kegiatan['created_by'] != $user_id) {
             return redirect()->to('/kegiatan')->with('error', 'Akses ditolak!');
         }
 
@@ -185,7 +185,7 @@ class Kegiatan extends BaseController
         $role = session()->get('role');
         $user_id = session()->get('id_user');
         
-        if (!in_array($role, ['waka_kesiswaan']) && $kegiatan['created_by'] != $user_id) {
+        if ($kegiatan['created_by'] != $user_id) {
             return redirect()->to('/kegiatan')->with('error', 'Akses ditolak!');
         }
 
@@ -258,7 +258,7 @@ class Kegiatan extends BaseController
         $role = session()->get('role');
         $user_id = session()->get('id_user');
         
-        if (!in_array($role, ['waka_kesiswaan']) && $kegiatan['created_by'] != $user_id) {
+        if ($role !== 'waka_kesiswaan') {
             return redirect()->to('/kegiatan')->with('error', 'Akses ditolak!');
         }
 

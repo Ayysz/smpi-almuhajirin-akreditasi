@@ -18,7 +18,8 @@ class ProgramOsisModel extends Model
         'status',
         'file_proposal',
         'periode',
-        'created_at' // <- tambahkan ini
+        'created_at', // <- tambahkan ini
+        'created_by'
     ];
     
     // Database TIDAK punya kolom updated_at, jadi DISABLE

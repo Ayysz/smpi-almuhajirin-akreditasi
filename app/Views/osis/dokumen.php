@@ -56,10 +56,16 @@
                                 <?php if ($showAksi): ?>
                                 <td>
                                     <div class="btn-group btn-group-sm js-stop-row">
-                                        <?php if (in_array($role, $allowedCRUD) || strpos($role, 'guru') === 0): ?>
+                                        <?php 
+                                        $isOwner = isset($d['uploaded_by']) && $d['uploaded_by'] == session()->get('id_user');
+                                        $canEdit = $isOwner;
+                                        ?>
+                                        <?php if ($canEdit): ?>
                                         <a href="<?= base_url('osis/edit_dokumen/' . $d['id_dokumen']) ?>" class="btn btn-warning" title="Edit">
                                             <i class="bi bi-pencil"></i>
                                         </a>
+                                        <?php endif; ?>
+                                        <?php if ($role === 'waka_kesiswaan'): ?>
                                         <button onclick="hapusDokumen(event, <?= $d['id_dokumen'] ?>, '<?= addslashes($d['nama_dokumen']) ?>')" class="btn btn-danger" title="Hapus">
                                             <i class="bi bi-trash"></i>
                                         </button>

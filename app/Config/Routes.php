@@ -33,7 +33,6 @@ $routes->get('auth/logout', 'Auth::logout');
 $routes->get('download/(:any)/(:any)', 'Download::file/$1/$2');
 $routes->get('view/(:any)/(:any)', 'Download::view/$1/$2');
 $routes->get('uploads/(.*)', 'Download::serve/$1');
-$routes->get('auth/test', 'Auth::test'); // Untuk debugging
 
 
 

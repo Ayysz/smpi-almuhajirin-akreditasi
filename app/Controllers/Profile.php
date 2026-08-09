@@ -37,7 +37,7 @@ class Profile extends BaseController
         // Update password jika diisi
         $password = $this->request->getPost('password');
         if (!empty($password)) {
-            $data['password'] = md5($password);
+            $data['password'] = password_hash($password, PASSWORD_DEFAULT);
         }
 
         // Upload foto jika ada

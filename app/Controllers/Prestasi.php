@@ -114,7 +114,8 @@ class Prestasi extends BaseController
             'lokasi_lomba' => $this->request->getPost('lokasi_lomba'),
             'file_sertifikat' => $file_sertifikat,
             'surat_tugas' => !empty($surat_tugas) ? json_encode($surat_tugas) : null,
-            'dokumen_pendukung' => !empty($dokumen_pendukung) ? json_encode($dokumen_pendukung) : null
+            'dokumen_pendukung' => !empty($dokumen_pendukung) ? json_encode($dokumen_pendukung) : null,
+            'created_by' => session()->get('id_user')
         ];
 
         if ($this->prestasiModel->insert($data)) {
@@ -145,6 +146,10 @@ class Prestasi extends BaseController
         
         if (!$data['prestasi']) {
             return redirect()->to('/prestasi')->with('error', 'Prestasi tidak ditemukan!');
+        }
+
+        if ($data['prestasi']['created_by'] != session()->get('id_user')) {
+            return redirect()->to('/prestasi')->with('error', 'Akses ditolak! Anda bukan pembuat data ini.');
         }
         
         return view('template/header', $data)
@@ -184,6 +189,10 @@ class Prestasi extends BaseController
         $current = $this->prestasiModel->find($id);
         if (!$current) {
             return redirect()->to('/prestasi')->with('error', 'Prestasi tidak ditemukan!');
+        }
+
+        if ($current['created_by'] != session()->get('id_user')) {
+            return redirect()->to('/prestasi')->with('error', 'Akses ditolak! Anda bukan pembuat data ini.');
         }
         
         $data = [
@@ -274,7 +283,7 @@ class Prestasi extends BaseController
     public function hapus($id)
     {
         $role = session()->get('role');
-        if (!in_array($role, ['waka_kesiswaan', 'guru'])) {
+        if ($role !== 'waka_kesiswaan') {
             return redirect()->to('/prestasi')->with('error', 'Akses ditolak!');
         }
         
@@ -323,7 +332,10 @@ class Prestasi extends BaseController
     // DETAIL untuk MODAL (return HTML string)
     public function detail($id)
     {
-        $prestasi = $this->prestasiModel->find($id);
+        $prestasi = $this->prestasiModel
+            ->select('prestasi.*, creator.nama_lengkap as nama_pembuat')
+            ->join('users as creator', 'creator.id_user = prestasi.created_by', 'left')
+            ->find($id);
         
         if (!$prestasi) {
             return '<div class="alert alert-danger">Data tidak ditemukan</div>';
@@ -394,7 +406,7 @@ class Prestasi extends BaseController
         $html .= '</td></tr>';
 
         // Dokumentasi Kegiatan (Multiple)
-        $html .= '<tr><th>Dokumentasi Kegiatan</th><td>';
+        $html .= '<tr><th>Dokumen Pendukung</th><td>';
         if (!empty($prestasi['dokumen_pendukung'])) {
             $docs = json_decode($prestasi['dokumen_pendukung'], true);
             if ($docs && count($docs) > 0) {
@@ -438,6 +450,10 @@ class Prestasi extends BaseController
         }
         
         $html .= '
+            <tr>
+                <th>Dibuat Oleh</th>
+                <td>' . esc($prestasi['nama_pembuat'] ?? '-') . '</td>
+            </tr>
             <tr>
                 <th>Tanggal Input</th>
                 <td>' . date('d F Y H:i:s', strtotime($prestasi['created_at'])) . ' WIB</td>

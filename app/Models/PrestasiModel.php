@@ -12,7 +12,7 @@ class PrestasiModel extends Model
         'peringkat', 'tahun_perolehan', 'penyelenggara',
         'file_sertifikat', 'surat_tugas', 'dokumen_pendukung',
         'status_verifikasi', 'alasan_penolakan',
-        'tanggal_pelaksanaan', 'lokasi_lomba'
+        'tanggal_pelaksanaan', 'lokasi_lomba', 'created_by'
     ];
     protected $useTimestamps = true;
     protected $createdField = 'created_at';

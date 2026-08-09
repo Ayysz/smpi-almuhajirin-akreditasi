@@ -78,9 +78,8 @@
                                     <div class="btn-group btn-group-sm js-stop-row">
                                         <!-- Edit - Admin & Waka & Guru -->
                                         <?php
-                                        $isGuru = strpos($role, 'guru') === 0;
-                                        $canEdit = (in_array($role, ['waka_kesiswaan']) && $p['status_verifikasi'] == 'menunggu')
-                                            || ($isGuru && in_array($p['status_verifikasi'], ['menunggu', 'ditolak']));
+                                        $isOwner = $p['created_by'] == session()->get('id_user');
+                                        $canEdit = $isOwner && in_array($p['status_verifikasi'], ['menunggu', 'ditolak']);
                                         ?>
                                         <?php if ($canEdit): ?>
                                         <a href="<?= base_url('prestasi/edit/' . $p['id_prestasi']) ?>" 

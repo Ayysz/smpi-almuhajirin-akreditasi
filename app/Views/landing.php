@@ -2,8 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SI Kesiswaan - Sistem Informasi Kesiswaan</title>
+    <link rel="icon" href="<?= base_url('logo-sekolah.png') ?>" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
@@ -468,7 +468,7 @@
                         <a href="#" class="social-icon">
                             <i class="bi bi-facebook"></i>
                         </a>
-                        <a href="#" class="social-icon">
+                        <a href="https://www.instagram.com/smpi.almuhajirin/" class="social-icon" target="_blank" rel="noopener noreferrer">
                             <i class="bi bi-instagram"></i>
                         </a>
                         <a href="#" class="social-icon">
@@ -485,7 +485,7 @@
                     <a href="#home" class="footer-link">Home</a>
                     <a href="#fitur" class="footer-link">Fitur</a>
                     <a href="#statistik" class="footer-link">Statistik</a>
-                    <a href="/login" class="footer-link">Login</a>
+
                 </div>
                 
                 <div class="col-md-4 mb-4">

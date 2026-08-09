@@ -66,8 +66,8 @@
                                 <td>
                                     <div class="btn-group btn-group-sm js-stop-row">
                                         <?php 
-                                        $canEdit = (in_array($role, ['waka_kesiswaan']) && $vStatus == 'menunggu')
-                                            || (strpos($role, 'guru') === 0 && in_array($vStatus, ['menunggu', 'ditolak']));
+                                        $isOwner = isset($pr['created_by']) && $pr['created_by'] == session()->get('id_user');
+                                        $canEdit = $isOwner && in_array($vStatus, ['menunggu', 'ditolak']);
                                         ?>
                                         <?php if ($canEdit): ?>
                                         <a href="<?= base_url('osis/edit_program/' . $pr['id_program']) ?>" class="btn btn-warning" title="Edit Program">

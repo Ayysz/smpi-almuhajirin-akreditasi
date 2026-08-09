@@ -30,25 +30,26 @@ class Auth extends BaseController
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
         
-        // Debug - Tampilkan input (HAPUS SETELAH BERHASIL)
-        log_message('debug', 'Username: ' . $username);
-        log_message('debug', 'Password: ' . $password);
-        log_message('debug', 'Password MD5: ' . md5($password));
-        
-        // Hash password dengan MD5
-        $password_hash = md5($password);
-        
-        // Cari user di database
+        // Cari user di database berdasarkan username
         $userModel = new UserModel();
         $user = $userModel->where('username', $username)
-                          ->where('password', $password_hash)
                           ->where('is_active', 1)
                           ->first();
         
-        // Debug - Cek hasil query (HAPUS SETELAH BERHASIL)
-        log_message('debug', 'User found: ' . print_r($user, true));
+        $is_password_valid = false;
         
         if ($user) {
+            if (password_verify($password, $user['password'])) {
+                $is_password_valid = true;
+            } elseif (md5($password) === $user['password']) {
+                $is_password_valid = true;
+                $userModel->update($user['id_user'], [
+                    'password' => password_hash($password, PASSWORD_DEFAULT)
+                ]);
+            }
+        }
+        
+        if ($is_password_valid) {
             // Login berhasil - Set session
             $session_data = [
                 'id_user' => $user['id_user'],
@@ -81,82 +82,4 @@ class Auth extends BaseController
         session()->destroy();
         return redirect()->to('/auth');
     }
-    
-    // FUNGSI TEST - untuk debugging
-    public function test()
-{
-    // Cek .env terbaca
-    echo "<h3>Cek Environment:</h3>";
-    echo "CI_ENVIRONMENT: " . ENVIRONMENT . "<br>";
-    echo "Database: " . getenv('database.default.database') . "<br><br>";
-    
-    echo "<h3>Test Koneksi Database:</h3>";
-    
-    try {
-        $db = \Config\Database::connect();
-        
-        // Test query sederhana
-        $query = $db->query("SELECT 1 as test");
-        $result = $query->getRow();
-        
-        if ($result && $result->test == 1) {
-            echo "✅ Database connected successfully<br>";
-        } else {
-            echo "❌ Database connection failed<br>";
-            die();
-        }
-        
-    } catch (\Exception $e) {
-        echo "❌ Connection Error: " . $e->getMessage() . "<br>";
-        die();
-    }
-    
-    // Test 2: Cek tabel users
-    try {
-        if ($db->tableExists('users')) {
-            echo "✅ Table 'users' exists<br>";
-        } else {
-            echo "❌ Table 'users' not found<br>";
-            die();
-        }
-    } catch (\Exception $e) {
-        echo "❌ Error checking table: " . $e->getMessage() . "<br>";
-        die();
-    }
-    
-    // Test 3: Cek data user admin
-    try {
-        $query = $db->query("SELECT * FROM users WHERE username = 'admin'");
-        $user = $query->getRow();
-        
-        if ($user) {
-            echo "✅ User 'admin' found<br>";
-            echo "<pre>";
-            print_r($user);
-            echo "</pre>";
-        } else {
-            echo "❌ User 'admin' not found<br>";
-            echo "<strong>Silakan insert user admin manual!</strong><br>";
-        }
-    } catch (\Exception $e) {
-        echo "❌ Error fetching user: " . $e->getMessage() . "<br>";
-    }
-    
-    // Test 4: Test password hash
-    echo "<h3>Test Password Hash:</h3>";
-    echo "Password asli: admin123<br>";
-    echo "MD5 Hash: " . md5('admin123') . "<br>";
-    
-    if (isset($user) && $user && $user->password == md5('admin123')) {
-        echo "✅ Password hash match!<br>";
-    } else {
-        echo "❌ Password hash tidak match<br>";
-        echo "Password di DB: " . (isset($user) && $user ? $user->password : 'User tidak ada') . "<br>";
-    }
-    
-    // Test 5: Test session
-    echo "<h3>Test Session:</h3>";
-    session()->set('test', 'Session working!');
-    echo session()->get('test') ? "✅ Session working" : "❌ Session not working";
-}
 }

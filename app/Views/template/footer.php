@@ -159,6 +159,27 @@
         });
     });
     <?php endif; ?>
+
+    // Global File Size Validation
+    document.addEventListener('change', function(e) {
+        if (e.target && e.target.type === 'file') {
+            const maxMB = e.target.dataset.maxSize || 5;
+            const maxBytes = maxMB * 1024 * 1024;
+            let fileLimitExceeded = false;
+            
+            for (let i = 0; i < e.target.files.length; i++) {
+                if (e.target.files[i].size > maxBytes) {
+                    fileLimitExceeded = true;
+                    break;
+                }
+            }
+
+            if (fileLimitExceeded) {
+                uiNotify('Maaf, ukuran file terlalu besar! Maksimal ' + maxMB + ' MB. Silakan kompres file Anda terlebih dahulu.', 'danger');
+                e.target.value = ''; // Reset input
+            }
+        }
+    });
 </script>
 </body>
 </html>
