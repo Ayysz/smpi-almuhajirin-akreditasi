@@ -18,6 +18,8 @@ class ProgramOsisModel extends Model
         'status',
         'file_proposal',
         'periode',
+        'alasan_penolakan',
+        'status_verifikasi',
         'created_at', // <- tambahkan ini
         'created_by'
     ];
@@ -58,5 +60,10 @@ class ProgramOsisModel extends Model
         return $this->where('periode', $periode)
                     ->orderBy('tanggal_mulai', 'DESC')
                     ->findAll();
+    }
+
+    public function countPendingVerifikasi()
+    {
+        return $this->where('status_verifikasi', 'menunggu')->countAllResults();
     }
 }

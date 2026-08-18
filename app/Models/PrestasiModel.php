@@ -68,4 +68,9 @@ class PrestasiModel extends Model
                     ->limit($limit)
                     ->find();
     }
+
+    public function countPendingVerifikasi()
+    {
+        return $this->where('status_verifikasi', 'menunggu')->countAllResults();
+    }
 }

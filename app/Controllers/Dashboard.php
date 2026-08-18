@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Models\KegiatanModel;
 use App\Models\PrestasiModel;
+use App\Models\ProgramOsisModel;
 use App\Models\UserModel;
 // use App\Models\DokumenModel;
 
@@ -13,6 +14,7 @@ class Dashboard extends BaseController
         $kegiatanModel = new KegiatanModel();
         $prestasiModel = new PrestasiModel();
         $userModel = new UserModel();
+        $programOsisModel = new ProgramOsisModel();
         //$dokumenModel = new DokumenModel();
         
         $role = session()->get('role');
@@ -36,6 +38,10 @@ class Dashboard extends BaseController
             // Kegiatan yang dibuat user
             $personalKegiatan = $kegiatanModel->where('created_by', $userId)->countAllResults();
         }
+        $kegiatanPendingVerif = $kegiatanModel->countPendingVerifikasi();
+        $prestasiPendingVerif = $prestasiModel->countPendingVerifikasi();
+        $programOsisPendingVerif = $programOsisModel->countPendingVerifikasi();
+        $pendingVerifikasi = $kegiatanPendingVerif + $prestasiPendingVerif + $programOsisPendingVerif;
         
         $data = [
             'total_kegiatan' => $isAdminLike ? $kegiatanModel->countAll() : $personalKegiatan,
@@ -43,7 +49,7 @@ class Dashboard extends BaseController
             //'total_dokumen' => $dokumenModel->countAll(),
             'kegiatan_berjalan' => $kegiatanModel->getKegiatanBerjalan(),
             'kegiatan_belum_verifikasi' => $kegiatanModel->getPendingVerifikasi(10),
-            'pending_verifikasi' => $kegiatanModel->countPendingVerifikasi(),
+            'pending_verifikasi' => $pendingVerifikasi,
             'siswa_aktif' => $siswaAktif,
             'series_kegiatan' => $seriesKegiatan,
             'series_prestasi' => $seriesPrestasi,
